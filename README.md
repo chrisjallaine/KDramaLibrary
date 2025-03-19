@@ -5,7 +5,7 @@ Welcome to the KDramaLibrary project! This is a very simple web application I de
 
 You can preview the the project here:
 
-[KDramaLibrary Demo](https://k-drama-library-hybk2kz5z-chrisjallaines-projects.vercel.app/)
+[https://k-drama-library-git-main-chrisjallaines-projects.vercel.app/](https://k-drama-library-git-main-chrisjallaines-projects.vercel.app/)
 
 ## Features
 
