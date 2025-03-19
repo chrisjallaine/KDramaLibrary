@@ -515,3 +515,62 @@ document.addEventListener('DOMContentLoaded', function() {
     posterUploadInput.value = '';
   }
 });
+
+
+function showConfetti() {
+  const confettiCount = 200;
+  const colors = ['#ff3e78', '#7000ff', '#00e1ff', '#00ffa3', '#ffde00'];
+  
+  for (let i = 0; i < confettiCount; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    confetti.style.opacity = Math.random();
+    confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+    
+    document.body.appendChild(confetti);
+    
+    setTimeout(() => {
+      confetti.remove();
+    }, 5000);
+  }
+}
+
+
+let isEditing = false; 
+if (!isEditing) {
+  showConfetti();
+}
+
+function updateEmptyStateWithEmoji() {
+  const emojis = ['🍿', '📺', '🎬', '💖', '✨', '🌟'];
+  const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+  
+  const emptyStateTitle = document.querySelector('.empty-state-title');
+  if (emptyStateTitle) {
+    emptyStateTitle.textContent = `Your K-Drama collection is empty ${randomEmoji}`;
+  }
+}
+
+
+updateEmptyStateWithEmoji();
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
