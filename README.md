@@ -1,7 +1,6 @@
 # KDramaLibrary
 
-Welcome to the KDramaLibrary project! This is a web application designed for fans of K-Dramas to explore and discover their favorite shows.
-
+Welcome to the KDramaLibrary project! This is a very simple web application I designed for all kdramas i have watched.
 ## Demo
 
 You can preview the the project here:
