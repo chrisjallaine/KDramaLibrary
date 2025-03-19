@@ -3,183 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My K-Drama Library</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>K-Drama Vault ✨</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>My K-Drama Library</h1>
-      <button id="add-kdrama-btn" class="btn btn-primary">
-        <i data-feather="plus"></i>
-        Add New K-Drama
-      </button>
-    </header>
+  <header>
+    <div class="container header-content">
+      <h1 class="app-title">K-Drama <span>Vault</span> ✨</h1>
+    </div>
+  </header>
 
+  <main class="container">
     <div class="search-container">
-      <div class="search-input-wrapper">
-        <i data-feather="search" class="search-icon"></i>
-        <input type="search" id="search-input" placeholder="Search your K-dramas..." class="search-input">
-        <button id="clear-search-btn" class="btn-icon hidden">
-          <i data-feather="x"></i>
-        </button>
-      </div>
+      <i data-feather="search" class="search-icon"></i>
+      <input type="text" id="search-input" placeholder="Search for a K-Drama...">
+      <button id="clear-search-btn" class="hidden">
+        <i data-feather="x"></i>
+      </button>
     </div>
 
-    <div id="empty-state" class="empty-state hidden">
-      <h2>Your K-Drama collection is empty</h2>
-      <p>Start by adding your favorite K-Dramas to your library</p>
-      <button id="add-first-kdrama-btn" class="btn btn-primary">
+    <div class="add-btn-container">
+      <button id="add-kdrama-btn">
+        <i data-feather="plus"></i>
+        Add K-Drama
+      </button>
+    </div>
+
+    <div id="kdrama-grid"></div>
+
+    <div id="empty-state" class="hidden">
+      <div class="empty-state-icon">
+        <i data-feather="film"></i>
+      </div>
+      <h2 class="empty-state-title">Your K-Drama collection is empty</h2>
+      <p class="empty-state-text">Start building your collection by adding your favorite K-Dramas!</p>
+      <button id="add-first-kdrama-btn">
         <i data-feather="plus"></i>
         Add Your First K-Drama
       </button>
     </div>
+  </main>
 
-    <div id="kdrama-grid" class="kdrama-grid"></div>
-
-    <!-- Modal for adding/editing K-dramas -->
-    <div id="kdrama-modal" class="modal hidden">
-      <div class="modal-overlay"></div>
-      <div class="modal-container">
-        <div class="modal-header">
-          <h2 id="modal-title">Add New K-Drama</h2>
-          <button id="close-modal-btn" class="btn-icon">
-            <i data-feather="x"></i>
-          </button>
+  <!-- K-Drama Card Template -->
+  <template id="kdrama-card-template">
+    <div class="kdrama-card hover-lift">
+      <div class="poster-container">
+        <img class="poster-img" src="/placeholder.svg" alt="">
+        <div class="card-overlay">
+          <h3 class="kdrama-title"></h3>
+          <div class="kdrama-meta">
+            <span class="kdrama-year"></span>
+            <span class="kdrama-info"></span>
+          </div>
+          <div class="kdrama-genres"></div>
         </div>
-        <div class="modal-body">
-          <form id="kdrama-form">
-            <input type="hidden" id="kdrama-id">
-            <div class="form-grid">
-              <div class="form-column">
-                <div class="form-group">
-                  <label for="title">Title</label>
-                  <input type="text" id="title" name="title" required class="form-input">
-                </div>
-
-                <div class="form-group">
-                  <label>Poster Image</label>
-                  <div id="image-upload-container">
-                    <div id="image-preview-container" class="hidden">
-                      <img id="image-preview" src="/placeholder.svg" alt="Preview">
-                      <button type="button" id="remove-image-btn" class="btn-icon btn-remove-image">
-                        <i data-feather="x"></i>
-                      </button>
-                    </div>
-                    <div id="image-upload-placeholder">
-                      <input type="file" id="poster-upload" accept="image/*" class="hidden">
-                      <button type="button" id="upload-trigger-btn" class="upload-btn">
-                        <i data-feather="upload"></i>
-                        <span>Upload image</span>
-                        <span class="upload-hint">JPG, PNG (max 2MB)</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="year">Year</label>
-                    <input type="number" id="year" name="year" min="1990" required class="form-input">
-                  </div>
-                  <div class="form-group">
-                    <label for="episodes">Episodes</label>
-                    <input type="number" id="episodes" name="episodes" min="1" required class="form-input">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="network">Network</label>
-                  <input type="text" id="network" name="network" required class="form-input">
-                </div>
-
-                <div class="form-group">
-                  <label for="status">Status</label>
-                  <select id="status" name="status" class="form-select">
-                    <option value="Ongoing">Ongoing</option>
-                    <option value="Completed">Completed</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label>Rating</label>
-                  <div class="rating-container">
-                    <div id="star-rating" class="star-rating"></div>
-                    <span id="rating-value" class="rating-value">0.0 / 5</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-column">
-                <div class="form-group">
-                  <label for="synopsis">Synopsis</label>
-                  <textarea id="synopsis" name="synopsis" rows="4" required class="form-textarea"></textarea>
-                </div>
-
-                <div class="form-group">
-                  <label>Genres</label>
-                  <div id="genres-container" class="tags-container"></div>
-                  <div class="input-with-button">
-                    <input type="text" id="new-genre" placeholder="Add a genre" class="form-input">
-                    <button type="button" id="add-genre-btn" class="btn btn-outline" disabled>
-                      <i data-feather="plus"></i> Add
-                    </button>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>Cast</label>
-                  <div id="cast-container" class="cast-container"></div>
-                  <div class="form-row">
-                    <input type="text" id="new-cast-name" placeholder="Actor name" class="form-input">
-                    <input type="text" id="new-cast-role" placeholder="Character role" class="form-input">
-                  </div>
-                  <button type="button" id="add-cast-btn" class="btn btn-outline btn-full" disabled>
-                    <i data-feather="plus"></i> Add Cast Member
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" id="cancel-btn" class="btn btn-outline">Cancel</button>
-              <button type="submit" id="submit-btn" class="btn btn-primary">Add K-Drama</button>
-            </div>
-          </form>
+      </div>
+      <div class="card-content">
+        <p class="kdrama-synopsis"></p>
+      </div>
+      <div class="card-footer">
+        <div class="star-rating-display"></div>
+        <div class="card-actions">
+          <button class="btn-edit">
+            <i data-feather="edit-2"></i>
+          </button>
+          <button class="btn-delete">
+            <i data-feather="trash-2"></i>
+          </button>
         </div>
       </div>
     </div>
+  </template>
 
-    <!-- Template for K-drama card -->
-    <template id="kdrama-card-template">
-      <div class="kdrama-card">
-        <div class="kdrama-poster">
-          <img src="/placeholder.svg" alt="" class="poster-img">
-        </div>
-        <div class="kdrama-content">
-          <div class="kdrama-header">
-            <div class="star-rating-display"></div>
-            <span class="kdrama-year"></span>
-          </div>
-          <h3 class="kdrama-title"></h3>
-          <p class="kdrama-synopsis"></p>
-          <div class="kdrama-genres"></div>
-          <div class="kdrama-info"></div>
-        </div>
-        <div class="kdrama-footer">
-          <button class="btn btn-text btn-edit">
-            <i data-feather="edit"></i> Edit
-          </button>
-          <button class="btn btn-text btn-delete">
-            <i data-feather="trash-2"></i> Delete
-          </button>
-        </div>
+  <!-- Modal -->
+  <div id="kdrama-modal" class="hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add New K-Drama</h2>
+        <button id="close-modal-btn">
+          <i data-feather="x"></i>
+        </button>
       </div>
-    </template>
-
-    <script src="app.js"></script>
+      <div class="modal-body">
+        <form id="kdrama-form">
+          <input type="hidden" id="kdrama-id">
+          
+          <div class="image-upload">
+            <div id="image-upload-placeholder">
+              <div class="upload-icon">
+                <i data-feather="image"></i>
+              </div>
+              <p class="upload-text">Upload a poster image for your K-Drama</p>
+              <button type="button" id="upload-trigger-btn">Choose Image</button>
+            </div>
+            <input type="file" id="poster-upload" accept="image/*" hidden>
+            <div id="image-preview-container" class="hidden">
+              <img id="image-preview" src="/placeholder.svg" alt="Poster Preview">
+              <button type="button" id="remove-image-btn">
+                <i data-feather="x"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" id="title" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="year" class="form-label">Year</label>
+              <input type="number" id="year" class="form-input" min="1990" max="2030" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="episodes" class="form-label">Episodes</label>
+              <input type="number" id="episodes" class="form-input" min="1" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="network" class="form-label">Network</label>
+              <input type="text" id="network" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="status" class="form-label">Status</label>
+              <select id="status" class="form-select" required>
+                <option value="Completed">Completed</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Upcoming">Upcoming</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Rating</label>
+              <div class="rating-container">
+                <div id="star-rating"></div>
+                <div id="rating-value">0.0 / 5</div>
+              </div>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label">Genres</label>
+              <div class="genres-input">
+                <input type="text" id="new-genre" class="form-input" placeholder="Add a genre...">
+                <button type="button" id="add-genre-btn" disabled>Add</button>
+              </div>
+              <div id="genres-container"></div>
+            </div>
+            
+            <div class="form-group full-width">
+              <label class="form-label">Cast</label>
+              <div class="cast-input">
+                <input type="text" id="new-cast-name" class="form-input" placeholder="Actor name">
+                <input type="text" id="new-cast-role" class="form-input" placeholder="Character role">
+                <button type="button" id="add-cast-btn" disabled>Add</button>
+              </div>
+              <div id="cast-container"></div>
+            </div>
+            
+            <div class="form-group full-width">
+              <label for="synopsis" class="form-label">Synopsis</label>
+              <textarea id="synopsis" class="form-textarea" rows="4" required></textarea>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" id="cancel-btn">Cancel</button>
+            <button type="submit" id="submit-btn">Add K-Drama</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
