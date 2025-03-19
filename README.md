@@ -4,7 +4,7 @@ Welcome to the KDramaLibrary project! This is a web application designed for fan
 
 ## Demo
 
-You can preview the live demo of the project here:
+You can preview the the project here:
 
 [KDramaLibrary Demo](https://k-drama-library-hybk2kz5z-chrisjallaines-projects.vercel.app/)
 
